@@ -9,10 +9,11 @@ jobs:
   python-artifact:
     runs-on: ubuntu-latest
     name: "python artifact"
-    # Variables de ambiente para todo el pipeline / se puede poner por job
+
     env:
      CR_PAT: ${{ secret.CR_PAT }}
 
+    steps:
     - name: Checkout
       uses: actions/checkout@v4.1.1
 
