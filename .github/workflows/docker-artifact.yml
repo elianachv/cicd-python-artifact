@@ -1,0 +1,29 @@
+on:
+  push:
+
+defaults:
+  run:
+  shell: bash
+
+jobs:
+  python-artifact:
+    runs-on: ubuntu-latest
+    name: "python artifact"
+    # Variables de ambiente para todo el pipeline / se puede poner por job
+    env:
+     CR_PAT: ${{ secret.CR_PAT }}
+
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
+
+    - name: Build
+      run: |
+        docker build -t artifact-python-demo:latest .
+        docker tag artifact-python-demo:latest ghcr.io/elianachv/cicd-python-artifact/artifact-python-demo:latest
+
+    - name: Deploy
+      run: |
+        echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+        docker push ghcr.io/elianachv/cicd-python-artifact/artifact-python-demo:latest
+
+
